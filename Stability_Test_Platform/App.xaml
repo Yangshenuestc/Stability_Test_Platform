@@ -1,0 +1,9 @@
+﻿<Application x:Class="Stability_Test_Platform.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Stability_Test_Platform"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
