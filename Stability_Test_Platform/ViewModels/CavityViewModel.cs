@@ -1,4 +1,8 @@
-﻿using System.Windows.Input;
+﻿using Microsoft.Win32;
+using Stability_Test_Platform.DataProcessing;
+using Stability_Test_Platform.Services;
+using System.IO;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -6,6 +10,11 @@ namespace Stability_Test_Platform.ViewModels
 {
     public class CavityViewModel:ViewModelBase
     {
+        //表格操作测试
+        private FileStorageManager file;
+        private IvCurveAnalyzer _analyzer = new IvCurveAnalyzer();
+        private ExcelExportService _excelService = new ExcelExportService();
+
         #region 函数构造
         public CavityViewModel(string name)
         {
@@ -56,12 +65,20 @@ namespace Stability_Test_Platform.ViewModels
             set => SetProperty(ref _isTesting, value);
         }
 
-        //Excel文件保存路径
-        private string _savePath = @"C:\TestResults\";
+        //文件保存路径
+        private string _savePath = @"Please select path...";
         public string SavePath
         {
             get => _savePath;
             set => SetProperty(ref _savePath, value);
+        }
+
+        // 路径显示颜色
+        private Brush _pathColor = Brushes.Red;
+        public Brush PathColor
+        {
+            get => _pathColor;
+            set => SetProperty(ref _pathColor, value);
         }
 
         //文件名称
@@ -106,20 +123,20 @@ namespace Stability_Test_Platform.ViewModels
             set => SetProperty(ref _isInvertedType, value);
         }
 
-        //电压范围最小值设置
-        private string _minVoltage = "-0.1";
-        public string MinVoltage
+        //电压范围起始值
+        private string _initialVoltage = "-0.1";
+        public string InitialVoltage
         {
-            get => _minVoltage;
-            set => SetProperty(ref _minVoltage, value);
+            get => _initialVoltage;
+            set => SetProperty(ref _initialVoltage, value);
         }
 
-        //电压范围最大值设置
-        private string _maxVoltage = "1.2";
-        public string MaxVoltage
+        //电压范围终止值
+        private string _terminalVoltage = "1.2";
+        public string TerminalVoltage
         {
-            get => _maxVoltage;
-            set => SetProperty(ref _maxVoltage, value);
+            get => _terminalVoltage;
+            set => SetProperty(ref _terminalVoltage, value);
         }
 
         //添加的偏压值设置
@@ -253,7 +270,7 @@ namespace Stability_Test_Platform.ViewModels
         #endregion
 
         #region 测试功能实现
-
+        //开始测试
         private void StartTest(object obj)
         {
             // 点击开始测试，将状态切换为 True，XAML会自动隐藏配置页，显示测试页
@@ -265,8 +282,11 @@ namespace Stability_Test_Platform.ViewModels
             _testStartTime = DateTime.Now;
             RunningTime = TimeSpan.Zero;
             _testTimer.Start();
+            file = new FileStorageManager(SavePath, FileName);
+            _= MockMeasurementLoopAsync();
         }
 
+        //停止测试
         private void StopTest(object obj)
         {
             // 点击停止测试，将状态切换为 False，XAML会自动恢复配置页
@@ -276,13 +296,38 @@ namespace Stability_Test_Platform.ViewModels
             _testTimer.Stop();
         }
 
+        //选择文件保存路径
         private void SelectPath(object obj)
         {
-            // 这里通常会调用 FolderBrowserDialog 或 OpenFileDialog
-            // 为了演示，这里仅做一个简单的字符串改变
-            SavePath = @"D:\NewDataFolder\ChamberData\";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "请选择保存地址并输入文件名",
+                Filter = "Excel 文件 (*.xlsx)|*.xlsx|CSV 数据文件 (*.csv)|*.csv|所有文件 (*.*)|*.*",
+                DefaultExt = ".xlsx",
+                AddExtension = true,
+                FileName = this.FileName
+            };
+
+            if (Directory.Exists(this.SavePath))
+            {
+                saveFileDialog.InitialDirectory = this.SavePath;
+            }
+
+            bool? result = saveFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                string fullPath = saveFileDialog.FileName;
+
+                SavePath = Path.GetDirectoryName(fullPath) + "\\";
+                FileName = Path.GetFileNameWithoutExtension(fullPath);
+
+                // 当用户实质性地选择了路径后，将颜色恢复为正常颜色
+                PathColor = Brushes.Black;
+            }
         }
 
+        //计时器模拟
         private void TestTimer_Tick(object sender, EventArgs e)
         {
             // 1. 实时更新运行时间
@@ -312,6 +357,95 @@ namespace Stability_Test_Platform.ViewModels
                 T80StatusText = "T80 预警！效率下降超过20%";
             }
         }
+        #endregion
+
+        #region 数据处理与存储逻辑
+
+        /// <summary>
+        /// 扫描完成后的数据处理与保存中枢
+        /// </summary>
+        /// <param name="deviceId">器件位置，例如 "1-1"</param>
+        /// <param name="isForwardScan">是否为正扫 (true为正扫 Forward，false为反扫 Reverse)</param>
+        /// <param name="vArray">电压数组</param>
+        /// <param name="iArray">电流数组</param>
+        private void ProcessAndSaveDeviceData(string deviceId, bool isForwardScan, double[] vArray, double[] iArray)
+        {
+            // 将 bool 转换为路径所需的字符串 "Forward" 或 "Reverse"
+            string scanDirectionStr = isForwardScan ? "Forward" : "Reverse";
+
+            // 1. 获取当前环境时间与温度
+            double currentTime = RunningTime.TotalHours;
+            double currentTemp = CurrentTemperature;
+
+            // 2. 获取 IV 和 Result 的绝对存储路径 (使用你现有的 file 实例)
+            string ivFilePath = file.GetIvFilePath(scanDirectionStr, deviceId);
+            string resultFilePath = file.GetResultFilePath(scanDirectionStr, deviceId);
+
+            // 3. 将电压电流数组直接存入 IV 表格
+            _excelService.AppendIvDataToExcel(ivFilePath, deviceId, currentTime, vArray, iArray);
+
+            // 4. 计算光伏参数 (需要将面积字符串转为 double)
+            double.TryParse(DeviceArea, out double area);
+            PvMeasurementData resultData = _analyzer.Analyze(vArray, iArray, area);
+
+            // 5. 补充运行环境参数
+            resultData.TimeHours = currentTime;
+            resultData.SweepDirection = isForwardScan; // 对应 PvMeasurementData 里的 bool
+            resultData.Temperature = currentTemp;
+
+            // 假设这是你设定的测试延迟，实际可以从你的 SourceTableConfig 中读取
+            resultData.DelaySeconds = 0.1;
+
+            // 6. 将计算结果追加存入 Result 表格
+            _excelService.AppendResultDataToExcel(resultFilePath, deviceId, resultData);
+        }
+        #endregion
+        #region 表格循环测试
+
+        /// <summary>
+        /// 模拟后台硬件扫描的异步循环任务
+        /// </summary>
+        private async Task MockMeasurementLoopAsync()
+        {
+            // 只要处于测试状态，就一直循环
+            while (IsTesting)
+            {
+                try
+                {
+                    // 1. 构造模拟的测试电压数组 (例如从 -0.1 到 1.2)
+                    double[] dummyVoltage = new double[] { -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2 };
+                    double[] dummyCurrent = new double[dummyVoltage.Length];
+
+                    // 构造模拟的电流数据 (带一点随机波动，防止数据全是一模一样的)
+                    for (int i = 0; i < dummyVoltage.Length; i++)
+                    {
+                        // 随便造点假电流数据
+                        dummyCurrent[i] = 0.02 - 0.001 * dummyVoltage[i] + (_random.NextDouble() * 0.002);
+                    }
+
+                    // 2. 调用你之前写好的处理中枢，向 1-1 器件写入正扫数据
+                    ProcessAndSaveDeviceData("1-1", true, dummyVoltage, dummyCurrent);
+
+                    // 也可以顺便模拟写入反扫数据
+                    // ProcessAndSaveDeviceData("1-1", false, dummyVoltage, dummyCurrent);
+                }
+                catch (IOException ex)
+                {
+                    // 捕获文件占用异常：如果你在测试期间用 Excel 软件打开了该表格，后台写入会报错。
+                    // 捕获后程序不会崩溃，下一次循环如果文件关闭了，它会继续正常写入。
+                    System.Diagnostics.Debug.WriteLine($"写入文件失败，可能文件正被打开: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"模拟测试发生未知错误: {ex.Message}");
+                }
+
+                // 3. 异步等待 1 分钟 (60000 毫秒)
+                // 使用 Task.Delay 不会阻塞 UI 线程，界面依然可以流畅点击
+                await Task.Delay(TimeSpan.FromMinutes(1));
+            }
+        }
+
         #endregion
     }
 }

@@ -8,6 +8,7 @@ namespace Stability_Test_Platform.SourceTable
 {
     public class SourceTableConfig
     {
-
+        //IV扫描时间间隔
+        public double IV_ScanTime { get; set; }
     }
 }

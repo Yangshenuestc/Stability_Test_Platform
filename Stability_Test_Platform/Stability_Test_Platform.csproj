@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Image\HM Lab.png" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataProcessing\" />
+    <Resource Include="Image\HM Lab.png" />
   </ItemGroup>
 
 </Project>

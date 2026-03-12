@@ -9,7 +9,7 @@ namespace Stability_Test_Platform.SourceTable
 {
     public class SourceTable : ISourceTable
     {
-        public MethodResult<bool> Close()
+        public MethodResult<bool> IVMode(ElectricalInfo electricalInfo)
         {
             throw new NotImplementedException();
         }
@@ -19,22 +19,27 @@ namespace Stability_Test_Platform.SourceTable
             throw new NotImplementedException();
         }
 
+        public MethodResult<bool> Close()
+        {
+            throw new NotImplementedException();
+        }
+
         public MethodResult<bool> StopTest()
         {
             throw new NotImplementedException();
         }
 
-        public MethodResult<bool> TestMode1()
+        public MethodResult<bool> TestMode_Jsc()
         {
             throw new NotImplementedException();
         }
 
-        public MethodResult<bool> TestMode2()
+        public MethodResult<bool> TestMode_Vmpp()
         {
             throw new NotImplementedException();
         }
 
-        public MethodResult<bool> TestMode3()
+        public MethodResult<bool> TestMode_Voc()
         {
             throw new NotImplementedException();
         }

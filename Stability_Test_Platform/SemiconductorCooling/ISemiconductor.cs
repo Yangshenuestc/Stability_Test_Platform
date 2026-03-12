@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stability_Test_Platform.Hotplate
+namespace Stability_Test_Platform.SemiconductorCooling
 {
-    public interface IHotplate
+    public interface ISemiconductor
     {
         /// <summary>
         /// 获取当前温度
@@ -29,20 +29,20 @@ namespace Stability_Test_Platform.Hotplate
         /// <returns></returns>
         public MethodResult<bool> Close();
         /// <summary>
-        /// 设置热台加热温度
+        /// 设定保持温度
         /// </summary>
         /// <param name="temperatureInfo"></param>
         /// <returns></returns>
         public MethodResult<bool> SetTemperature(TemperatureInfo temperatureInfo);
         /// <summary>
-        /// 按设定温度开始加热
+        /// 按设定温度开始保持
         /// </summary>
         /// <returns></returns>
-        public MethodResult<bool> StartHeating();
+        public MethodResult<bool> StartWork();
         /// <summary>
-        /// 停止加热
+        /// 停止仪器
         /// </summary>
         /// <returns></returns>
-        public MethodResult<bool> StopHeating();
+        public MethodResult<bool> StopWork();
     }
 }

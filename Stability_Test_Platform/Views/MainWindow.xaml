@@ -15,7 +15,6 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-
         <Style x:Key="TopLabelStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="13" />
             <Setter Property="FontWeight" Value="SemiBold" />
@@ -105,7 +104,6 @@
             <Setter Property="FontSize" Value="18" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Cursor" Value="Hand" />
-
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -114,7 +112,6 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -475,7 +472,6 @@
                         ItemsSource="{Binding Cavitys}"
                         SelectedItem="{Binding SelectedCavity}"
                         Style="{StaticResource ModernTabControlStyle}">
-
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,10,0,0">
@@ -500,216 +496,229 @@
                                             Background="White"
                                             CornerRadius="12"
                                             RenderOptions.ClearTypeHint="Enabled">
-
                                             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
 
-                                                <StackPanel Margin="0,0,0,20">
-                                                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                                        <Button
-                                                            Width="80"
-                                                            Height="34"
-                                                            Background="#1E293B"
-                                                            Command="{Binding SelectPathCommand}"
-                                                            Content="Path"
-                                                            Cursor="Hand"
-                                                            FontWeight="Bold"
-                                                            Foreground="White">
-                                                            <Button.Template>
-                                                                <ControlTemplate TargetType="Button">
-                                                                    <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                                                                        <TextBlock
-                                                                            HorizontalAlignment="Center"
-                                                                            VerticalAlignment="Center"
-                                                                            Text="{TemplateBinding Content}" />
-                                                                    </Border>
-                                                                </ControlTemplate>
-                                                            </Button.Template>
-                                                        </Button>
-                                                        <TextBlock
-                                                            MaxWidth="280"
-                                                            Margin="15,0,0,0"
-                                                            VerticalAlignment="Center"
-                                                            FontSize="14"
-                                                            Foreground="#475569"
-                                                            Text="{Binding SavePath}"
-                                                            TextTrimming="CharacterEllipsis" />
-                                                    </StackPanel>
-                                                </StackPanel>
-
-                                                <StackPanel Margin="0,0,0,20">
-                                                    <TextBlock Style="{StaticResource TopLabelStyle}" Text="File Name" />
-                                                    <TextBox Text="{Binding FileName}" />
-                                                </StackPanel>
-
-                                                <Grid Margin="0,0,0,20">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="20" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel Grid.Column="0">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Device Type" />
-                                                        <StackPanel
-                                                            Height="38"
-                                                            VerticalAlignment="Center"
-                                                            Orientation="Horizontal">
-                                                            <RadioButton
-                                                                Margin="0,0,15,0"
-                                                                Content="N-I-P"
-                                                                IsChecked="{Binding IsFormalType}"
-                                                                Style="{StaticResource ModernRadioButtonStyle}" />
-                                                            <RadioButton
-                                                                Content="P-I-N"
-                                                                IsChecked="{Binding IsInvertedType}"
-                                                                Style="{StaticResource ModernRadioButtonStyle}" />
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="2">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Area (cm²)" />
-                                                        <TextBox Text="{Binding DeviceArea}" />
-                                                    </StackPanel>
-                                                </Grid>
-
-                                                <Grid Margin="0,0,0,20">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="20" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel Grid.Column="0">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Voltage Min (V)" />
-                                                        <TextBox Text="{Binding MinVoltage}" />
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="2">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Voltage Max (V)" />
-                                                        <TextBox Text="{Binding MaxVoltage}" />
-                                                    </StackPanel>
-                                                </Grid>
-
-                                                <Grid Margin="0,0,0,20">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="20" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel Grid.Column="0">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Voltage Step (V)" />
-                                                        <TextBox Text="{Binding VoltageStep}" />
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="2">
-                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Applied Bias (V)" />
-                                                        <TextBox Text="{Binding AppliedVoltage}" />
-                                                    </StackPanel>
-                                                </Grid>
-
-                                                <StackPanel Margin="0,0,0,20">
-                                                    <TextBlock Style="{StaticResource TopLabelStyle}" Text="Test Mode" />
-                                                    <ComboBox SelectedValue="{Binding SelectedTestMode}" SelectedValuePath="Content">
-                                                        <ComboBoxItem Content="ISOS-LC-1/2" />
-                                                        <ComboBoxItem Content="ISOS-L-1" />
-                                                        <ComboBoxItem Content="ISOS-L-2" />
-                                                    </ComboBox>
-                                                </StackPanel>
-
-                                                <ContentControl IsEnabled="{Binding HasTestMode}">
-                                                    <ContentControl.Style>
-                                                        <Style TargetType="ContentControl">
-                                                            <Setter Property="Content" Value="Select test mode above to set conditions..." />
-                                                            <Setter Property="Foreground" Value="#AAAAAA" />
-                                                            <Setter Property="VerticalAlignment" Value="Center" />
-                                                            <Setter Property="FontSize" Value="14" />
+                                                <StackPanel>
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="StackPanel">
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-LC-1/2">
-                                                                    <Setter Property="ContentTemplate">
-                                                                        <Setter.Value>
-                                                                            <DataTemplate>
-                                                                                <StackPanel>
-                                                                                    <Grid Margin="0,0,0,10">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                            <ColumnDefinition Width="20" />
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Light Time (h)" />
-                                                                                            <TextBox Text="{Binding LightTime}" />
-                                                                                        </StackPanel>
-                                                                                        <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Dark Time (h)" />
-                                                                                            <TextBox Text="{Binding DarkTime}" />
-                                                                                        </StackPanel>
-                                                                                    </Grid>
-                                                                                    <TextBlock
-                                                                                        Margin="0,5,0,0"
-                                                                                        FontSize="13"
-                                                                                        FontWeight="SemiBold"
-                                                                                        Foreground="#107C10"
-                                                                                        Text="* Room Temp Default" />
-                                                                                </StackPanel>
-                                                                            </DataTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
+                                                                <DataTrigger Binding="{Binding IsTesting}" Value="True">
+                                                                    <Setter Property="IsEnabled" Value="False" />
+                                                                    <Setter Property="Opacity" Value="0.6" />
                                                                 </DataTrigger>
-
-                                                                <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-L-1">
-                                                                    <Setter Property="ContentTemplate">
-                                                                        <Setter.Value>
-                                                                            <DataTemplate>
-                                                                                <StackPanel>
-                                                                                    <TextBlock Style="{StaticResource TopLabelStyle}" Text="Target Temperature (℃)" />
-                                                                                    <TextBox Text="{Binding TargetTemperature}" />
-                                                                                </StackPanel>
-                                                                            </DataTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </DataTrigger>
-
-                                                                <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-L-2">
-                                                                    <Setter Property="ContentTemplate">
-                                                                        <Setter.Value>
-                                                                            <DataTemplate>
-                                                                                <StackPanel>
-                                                                                    <Grid Margin="0,0,0,20">
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                            <ColumnDefinition Width="20" />
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Low Temp (℃)" />
-                                                                                            <TextBox Text="{Binding CycleLowTemperature}" />
-                                                                                        </StackPanel>
-                                                                                        <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="High Temp (℃)" />
-                                                                                            <TextBox Text="{Binding CycleHighTemperature}" />
-                                                                                        </StackPanel>
-                                                                                    </Grid>
-                                                                                    <Grid>
-                                                                                        <Grid.ColumnDefinitions>
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                            <ColumnDefinition Width="20" />
-                                                                                            <ColumnDefinition Width="*" />
-                                                                                        </Grid.ColumnDefinitions>
-                                                                                        <StackPanel Grid.Column="0">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Heat Time (h)" />
-                                                                                            <TextBox Text="{Binding HeatingTime}" />
-                                                                                        </StackPanel>
-                                                                                        <StackPanel Grid.Column="2">
-                                                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Cool Time (h)" />
-                                                                                            <TextBox Text="{Binding CoolingTime}" />
-                                                                                        </StackPanel>
-                                                                                    </Grid>
-                                                                                </StackPanel>
-                                                                            </DataTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </DataTrigger>
-
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </ContentControl.Style>
-                                                </ContentControl>
+                                                    </StackPanel.Style>
 
+                                                    <StackPanel Margin="0,0,0,20">
+                                                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                                            <Button
+                                                                Width="80"
+                                                                Height="34"
+                                                                Background="#1E293B"
+                                                                Command="{Binding SelectPathCommand}"
+                                                                Content="Path"
+                                                                Cursor="Hand"
+                                                                FontWeight="Bold"
+                                                                Foreground="White">
+                                                                <Button.Template>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                                            <TextBlock
+                                                                                HorizontalAlignment="Center"
+                                                                                VerticalAlignment="Center"
+                                                                                Text="{TemplateBinding Content}" />
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Button.Template>
+                                                            </Button>
+                                                            <TextBlock
+                                                                MaxWidth="280"
+                                                                Margin="15,0,0,0"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="14"
+                                                                Foreground="{Binding PathColor}"
+                                                                Text="{Binding SavePath}"
+                                                                TextTrimming="CharacterEllipsis" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <StackPanel Margin="0,0,0,20">
+                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="File Name" />
+                                                        <TextBox
+                                                            Foreground="{Binding PathColor}"
+                                                            IsReadOnly="True"
+                                                            Text="{Binding FileName}" />
+                                                    </StackPanel>
+
+                                                    <Grid Margin="0,0,0,20">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="20" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Device Type" />
+                                                            <StackPanel
+                                                                Height="38"
+                                                                VerticalAlignment="Center"
+                                                                Orientation="Horizontal">
+                                                                <RadioButton
+                                                                    Margin="0,0,15,0"
+                                                                    Content="N-I-P"
+                                                                    IsChecked="{Binding IsFormalType}"
+                                                                    Style="{StaticResource ModernRadioButtonStyle}" />
+                                                                <RadioButton
+                                                                    Content="P-I-N"
+                                                                    IsChecked="{Binding IsInvertedType}"
+                                                                    Style="{StaticResource ModernRadioButtonStyle}" />
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Area (cm²)" />
+                                                            <TextBox Text="{Binding DeviceArea}" />
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <Grid Margin="0,0,0,20">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="20" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Initial Voltage (V)" />
+                                                            <TextBox Text="{Binding InitialVoltage}" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Terminal Voltage (V)" />
+                                                            <TextBox Text="{Binding TerminalVoltage}" />
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <Grid Margin="0,0,0,20">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="20" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Voltage Step (V)" />
+                                                            <TextBox Text="{Binding VoltageStep}" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2">
+                                                            <TextBlock Style="{StaticResource TopLabelStyle}" Text="Applied Bias (V)" />
+                                                            <TextBox Text="{Binding AppliedVoltage}" />
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <StackPanel Margin="0,0,0,20">
+                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Test Mode" />
+                                                        <ComboBox SelectedValue="{Binding SelectedTestMode}" SelectedValuePath="Content">
+                                                            <ComboBoxItem Content="ISOS-LC-1/2" />
+                                                            <ComboBoxItem Content="ISOS-L-1" />
+                                                            <ComboBoxItem Content="ISOS-L-2" />
+                                                        </ComboBox>
+                                                    </StackPanel>
+
+                                                    <ContentControl IsEnabled="{Binding HasTestMode}">
+                                                        <ContentControl.Style>
+                                                            <Style TargetType="ContentControl">
+                                                                <Setter Property="Content" Value="Select test mode above to set conditions..." />
+                                                                <Setter Property="Foreground" Value="#AAAAAA" />
+                                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                                <Setter Property="FontSize" Value="14" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-LC-1/2">
+                                                                        <Setter Property="ContentTemplate">
+                                                                            <Setter.Value>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel>
+                                                                                        <Grid Margin="0,0,0,10">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                                <ColumnDefinition Width="20" />
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="Light Time (h)" />
+                                                                                                <TextBox Text="{Binding LightTime}" />
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="Dark Time (h)" />
+                                                                                                <TextBox Text="{Binding DarkTime}" />
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                        <TextBlock
+                                                                                            Margin="0,5,0,0"
+                                                                                            FontSize="13"
+                                                                                            FontWeight="SemiBold"
+                                                                                            Foreground="#107C10"
+                                                                                            Text="* Room Temp Default" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+
+                                                                    <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-L-1">
+                                                                        <Setter Property="ContentTemplate">
+                                                                            <Setter.Value>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel>
+                                                                                        <TextBlock Style="{StaticResource TopLabelStyle}" Text="Target Temperature (℃)" />
+                                                                                        <TextBox Text="{Binding TargetTemperature}" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+
+                                                                    <DataTrigger Binding="{Binding SelectedTestMode}" Value="ISOS-L-2">
+                                                                        <Setter Property="ContentTemplate">
+                                                                            <Setter.Value>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel>
+                                                                                        <Grid Margin="0,0,0,20">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                                <ColumnDefinition Width="20" />
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="Low Temp (℃)" />
+                                                                                                <TextBox Text="{Binding CycleLowTemperature}" />
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="High Temp (℃)" />
+                                                                                                <TextBox Text="{Binding CycleHighTemperature}" />
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                        <Grid>
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                                <ColumnDefinition Width="20" />
+                                                                                                <ColumnDefinition Width="*" />
+                                                                                            </Grid.ColumnDefinitions>
+                                                                                            <StackPanel Grid.Column="0">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="Heat Time (h)" />
+                                                                                                <TextBox Text="{Binding HeatingTime}" />
+                                                                                            </StackPanel>
+                                                                                            <StackPanel Grid.Column="2">
+                                                                                                <TextBlock Style="{StaticResource TopLabelStyle}" Text="Cool Time (h)" />
+                                                                                                <TextBox Text="{Binding CoolingTime}" />
+                                                                                            </StackPanel>
+                                                                                        </Grid>
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </ContentControl.Style>
+                                                    </ContentControl>
+                                                </StackPanel>
                                                 <Button
                                                     Height="48"
                                                     Margin="0,35,0,0"
@@ -729,14 +738,12 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Button.Style>
-
                                                     <Button.Background>
                                                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                                             <GradientStop Offset="0.0" Color="Green" />
                                                             <GradientStop Offset="1.0" Color="LightGreen" />
                                                         </LinearGradientBrush>
                                                     </Button.Background>
-
                                                     <Button.Template>
                                                         <ControlTemplate TargetType="Button">
                                                             <Border
@@ -764,7 +771,6 @@
                                                                         </Setter.Value>
                                                                     </Setter>
                                                                 </Trigger>
-
                                                                 <Trigger Property="IsEnabled" Value="False">
                                                                     <Setter TargetName="border" Property="Background" Value="#E2E8F0" />
                                                                     <Setter TargetName="txt" Property="Foreground" Value="#94A3B8" />
@@ -967,7 +973,7 @@
                                                                     <Border
                                                                         Margin="0,0,0,10"
                                                                         Padding="10"
-                                                                        Background="lightBlue"
+                                                                        Background="LightBlue"
                                                                         CornerRadius="6">
                                                                         <UniformGrid Columns="3" Rows="3">
                                                                             <RadioButton
@@ -1030,7 +1036,7 @@
 
                                                                     <Border
                                                                         Padding="10"
-                                                                        Background="lightBlue"
+                                                                        Background="LightBlue"
                                                                         CornerRadius="6">
                                                                         <UniformGrid Columns="3" Rows="3">
                                                                             <RadioButton

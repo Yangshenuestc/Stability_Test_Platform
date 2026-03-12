@@ -20,20 +20,25 @@ namespace Stability_Test_Platform.SourceTable
         /// <returns></returns>
         public MethodResult<bool> Close();
         /// <summary>
-        /// 以ISOS-LC-1/2模式进行测试（光暗1sun1dark，不加热）
+        /// 切换为Jsc测试通道:电压源，电流测量（V_target = 0 V）
         /// </summary>
         /// <returns></returns>
-        public MethodResult<bool> TestMode1();
+        public MethodResult<bool> TestMode_Jsc();
         /// <summary>
-        /// 以ISOS-L-1模式进行测试（持续光照）
+        /// 切换为Voc测试通道:电流源，电压测量（I_target = 0 A）
         /// </summary>
         /// <returns></returns>
-        public MethodResult<bool> TestMode2();
+        public MethodResult<bool> TestMode_Voc();
         /// <summary>
-        /// 以ISOS-L-2模式进行测试（光热，持续光照并且以一定温度稳定）
+        /// 切换为Vmpp测试通道:电压源，电流测量（V_target = V_mpp）
         /// </summary>
         /// <returns></returns>
-        public MethodResult<bool> TestMode3();
+        public MethodResult<bool> TestMode_Vmpp();
+        /// <summary>
+        /// IV曲线的测量
+        /// </summary>
+        /// <returns></returns>
+        public MethodResult<bool> IVMode(ElectricalInfo electricalInfo);
         /// <summary>
         /// 停止测试，并且复位相应源表
         /// </summary>

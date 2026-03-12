@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stability_Test_Platform.Hotplate
+namespace Stability_Test_Platform.ChannelSwitcher
 {
-    public class HotplateConfig
+    public class ChannelSwitcherConfig
     {
 
     }

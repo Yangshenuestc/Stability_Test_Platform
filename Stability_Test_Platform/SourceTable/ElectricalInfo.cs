@@ -13,5 +13,8 @@ namespace Stability_Test_Platform.SourceTable
 
         //扫描最大电压
         public double MaxVoltage { get; set; }
+
+        //电压步长
+        public double VoltageStep { get; set; }
     }
 }
